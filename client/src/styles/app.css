@@ -89,5 +89,8 @@ button[type="submit"]:hover:not(:disabled) { background: #3a58d4; }
 }
 
 .users-table th { background: #f0f0f0; font-weight: 600; }
+.users-table th.sortable { cursor: pointer; user-select: none; }
+.users-table th.sortable:hover { background: #e4e4e4; }
+.sort-indicator { font-size: 0.75rem; color: #888; }
 .users-table tr:last-child td { border-bottom: none; }
 .users-table tbody tr:hover { background: #fafafa; }

@@ -1,4 +1,32 @@
+import { useState } from 'react';
+
+const COLUMNS = [
+  { key: 'first_name', label: 'First Name' },
+  { key: 'last_name',  label: 'Last Name' },
+  { key: 'email',      label: 'Email' },
+  { key: 'created_at', label: 'Created' },
+];
+
 export default function UsersTable({ users }) {
+  const [sortKey, setSortKey] = useState('created_at');
+  const [sortDir, setSortDir] = useState('desc');
+
+  function handleSort(key) {
+    if (key === sortKey) {
+      setSortDir(d => d === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortKey(key);
+      setSortDir('asc');
+    }
+  }
+
+  const sorted = [...users].sort((a, b) => {
+    const av = a[sortKey] ?? '';
+    const bv = b[sortKey] ?? '';
+    const cmp = av < bv ? -1 : av > bv ? 1 : 0;
+    return sortDir === 'asc' ? cmp : -cmp;
+  });
+
   return (
     <section className="users-section">
       <h2>All Users</h2>
@@ -8,14 +36,22 @@ export default function UsersTable({ users }) {
         <table className="users-table">
           <thead>
             <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Email</th>
-              <th>Created</th>
+              {COLUMNS.map(col => (
+                <th
+                  key={col.key}
+                  className="sortable"
+                  onClick={() => handleSort(col.key)}
+                >
+                  {col.label}
+                  <span className="sort-indicator">
+                    {sortKey === col.key ? (sortDir === 'asc' ? ' ▲' : ' ▼') : ' ⬍'}
+                  </span>
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
-            {users.map(u => (
+            {sorted.map(u => (
               <tr key={u.id}>
                 <td>{u.first_name}</td>
                 <td>{u.last_name}</td>
