@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import UserForm from './components/UserForm.jsx';
 import UsersTable from './components/UsersTable.jsx';
 
-const API = 'http://localhost:3001/api/users';
+const API = `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/users`;
 
 export default function App() {
   const [users, setUsers] = useState(null);
